@@ -27,6 +27,14 @@ ADD www /var/www/html
 ADD apache-config.conf /etc/apache2/sites-available/000-default.conf
 ADD apache2.conf /etc/apache2/apache2.conf
 COPY index.php /var/www/html
+
 RUN chmod 777 -R /var/www/html/storage && chmod 777 -R /var/www/html/bootstrap/cache
 RUN php artisan config:clear && php artisan config:cache
 RUN a2enmod rewrite
+
+# INSTALL Composer
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+RUN composer update
+
+# INSTALL Excel
+RUN composer require maatwebsite/excel
