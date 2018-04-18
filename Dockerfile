@@ -17,9 +17,11 @@ RUN apt-get update \
         msodbcsql \
         unixodbc-dev
 
-RUN docker-php-ext-install mbstring pdo pdo_mysql \
+RUN apt-get install -y libpng-dev
+
+RUN docker-php-ext-install gd mbstring pdo pdo_mysql \
     && pecl install sqlsrv pdo_sqlsrv xdebug \
-    && docker-php-ext-enable sqlsrv pdo_sqlsrv xdebug
+    && docker-php-ext-enable sqlsrv pdo_sqlsrv xdebug gd
 
 ADD www /var/www/html
 ADD apache-config.conf /etc/apache2/sites-available/000-default.conf
