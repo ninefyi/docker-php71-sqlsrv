@@ -22,3 +22,9 @@ RUN docker-php-ext-install mbstring pdo pdo_mysql \
     && docker-php-ext-enable sqlsrv pdo_sqlsrv xdebug
 
 ADD www /var/www/html
+ADD apache-config.conf /etc/apache2/sites-available/000-default.conf
+ADD apache2.conf /etc/apache2/apache2.conf
+COPY index.php /var/www/html
+RUN chmod 777 -R /var/www/html/storage && chmod 777 -R /var/www/html/bootstrap/cache
+RUN php artisan config:clear && php artisan config:cache
+RUN a2enmod rewrite
